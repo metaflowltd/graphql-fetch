@@ -31,21 +31,24 @@ class RestClient extends http.BaseClient {
 
   toEncodable(d) {
     for (ScalarSerializer c in scalarSerializers.values) {
-      if(c.isType(d)) {
+      if (c.isType(d)) {
         return c.serialize(d);
       }
     }
-    if(d is MapObject) {
+    if (d is MapObject) {
       return d.toJson();
     }
     return d;
   }
 
-  Future<JsonResponse> postJson(String path, Map<String, dynamic> data) async {
+  Future<JsonResponse> postJson(String path, Map<String, dynamic> data,
+      {Map<String, String> headers}) async {
     String body = toJson(data);
     Uri uri = _baseUri.replace(path: _baseUri.path + path);
-    http.Response response = await this.post(uri.toString(),
-        body: body, headers: {'Content-Type': 'application/json'});
+    Map<String, String> headersMap = {'Content-Type': 'application/json'};
+    headersMap.addAll(headers);
+    http.Response response =
+        await this.post(uri.toString(), body: body, headers: headersMap);
     return handleJsonResponse(response);
   }
 
@@ -87,14 +90,21 @@ class RestClient extends http.BaseClient {
 class GraphqlClient extends RestClient {
   GraphqlClient(String endpoint) : super(endpoint);
 
-  Future<JsonResponse> request<T>(
-      String query, Map<String, dynamic> variables) async {
-    var result = await postJson("", {"query": query, "variables": variables});
+  Future<JsonResponse> request<T>(String query, Map<String, dynamic> variables,
+      {String authToken}) async {
+    Map<String, String> headersMap = {};
+    if (authToken != null) {
+      headersMap = {"Authorization": "Bearer $authToken"};
+    }
+    var result = await postJson("", {"query": query, "variables": variables},
+        headers: headersMap);
     return result;
   }
 
-  Future<GraphqlResponse<T>> query<T>(GraphqlQuery<T> query) async {
-    JsonResponse result = await request(query.query, query.variables);
+  Future<GraphqlResponse<T>> query<T>(GraphqlQuery<T> query,
+      {String authToken}) async {
+    JsonResponse result =
+        await request(query.query, query.variables, authToken: authToken);
     return result.decode((body) {
       Map map = JSON.decode(body);
       return new GraphqlResponse(query.constructorOfData, map);
