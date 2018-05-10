@@ -13,7 +13,7 @@ dependencies:
       url: https://github.com/metaflowltd/graphql-fetch.git
       path: client
   graphql_parser: ^1.0.0+1
-  code_builder: 2.4.0
+  code_builder: ^2.0.0
   json_object: "^1.0.19+1"
   logging: ^0.11.3+1
   dart_style: ^1.0.8

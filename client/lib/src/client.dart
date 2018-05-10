@@ -47,15 +47,11 @@ class RestClient extends http.BaseClient {
     Uri uri = _baseUri.replace(path: _baseUri.path + path);
     Map<String, String> headersMap = {'Content-Type': 'application/json'};
     headersMap.addAll(headers);
-    try {
-      http.Response response =
+    http.Response response =
           await this.post(uri.toString(), body: body, headers: headersMap);
-      return handleJsonResponse(response);
-    } on Exception catch (err) {
-      print("Error $err");
-      throw err;
-    }
-    //return JsonResponse("{'errors': ['general error']}");
+
+    return handleJsonResponse(response);
+
   }
 
   JsonResponse handleJsonResponse(http.Response response) {
