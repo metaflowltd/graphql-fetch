@@ -8,9 +8,9 @@ GraphqlBuildSetting createSetting(
     {String schemaUrl,
       String method: "post",
       bool postIntrospectionQuery: true,
-      String schemaFile}) {
+      String schemaFile, String authToken }) {
   return new GraphqlBuildSetting(
-      schemaUrl, method, postIntrospectionQuery, schemaFile);
+      schemaUrl, method, postIntrospectionQuery, schemaFile, authToken);
 }
 
 class GraphqlBuildSetting {
@@ -18,12 +18,13 @@ class GraphqlBuildSetting {
 
   String schemaUrl;
   String method;
+  String authToken;
   bool postIntrospectionQuery;
 
   String schemaFile;
 
   GraphqlBuildSetting(this.schemaUrl, this.method, this.postIntrospectionQuery,
-      this.schemaFile);
+      this.schemaFile, this.authToken);
 
   dynamic _schemaObject = null;
 
@@ -42,7 +43,7 @@ class GraphqlBuildSetting {
           if (postIntrospectionQuery) {
             query = {"query": IntrospectionQuery};
           }
-          result = await client.postJson("", query);
+          result = await client.postJson("", query,headers: {'Authorization': 'Bearer $authToken'});
         } else {
           result = await client.getJson("", {});
         }
