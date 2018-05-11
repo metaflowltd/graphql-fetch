@@ -13,7 +13,7 @@ class InputTypes extends BaseTypes {
       case "LIST":
         TypedReference genericType = generateInputType(b, typeSchema.ofType);
         return new TypedReference(
-            refer("Iterable<${genericType.reference.symbol}>", "dart:core"),
+            refer("List<${genericType.reference.symbol}>", "dart:core"),
             GraphType.LIST,
             genericReference: genericType);
       case "INPUT_OBJECT":

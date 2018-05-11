@@ -34,7 +34,7 @@ class QueryTypes extends BaseTypes {
 
   generateClassForType(
       FileBuilder b, SelectionContext context, dynamic objectSchema) {
-    var className = "${upperCaseFirst(_prefix)}_${objectSchema.name}";
+    var className = "${objectSchema.name}";
     Class clazz = new Class((ClassBuilder cb) {
       var fields = {};
       context.field.selectionSet.selections.forEach((sel) {

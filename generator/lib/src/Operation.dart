@@ -27,19 +27,20 @@ class Operation extends BaseTypes {
   generateCode(String resultClass) {
     Reference graphqlQuery =
         refer("GraphqlQuery", "package:graphql_fetch/graphql_fetch.dart");
-    List<String> variables = _context.variableDefinitions.variableDefinitions
-        .map((v) => '"${v.variable.name}": ${v.variable.name}')
-        .toList();
+    List<String> variables = _context.variableDefinitions?.variableDefinitions
+        ?.map((v) => '"${v.variable.name}": ${v.variable.name}')
+        ?.toList();
     String query = wrapStringCode(_context.span.text);
 
     List<String> strings = _queryTypes.depFragments.map((r) => "${r
         .symbol}.fragmentString").toList(growable: true);
     strings.insert(0, "query");
     return new Code.scope((a) {
+      String param = variables!= null ?  variables.join(',') : '';
       return "const query = $query;"
           "return new ${a(graphqlQuery)}("
           "${strings.join(" + ")},"
-          "{${variables.join(',')}},"
+          "{${param}},"
           "${resultClass}.fromMap);";
     });
   }
