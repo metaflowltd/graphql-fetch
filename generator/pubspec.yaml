@@ -12,6 +12,7 @@ dependencies:
     git:
       url: https://github.com/metaflowltd/graphql-fetch.git
       path: client
+      ref: master
   graphql_parser: ^1.0.0+1
   code_builder: ^2.0.0
   json_object: "^1.0.19+1"

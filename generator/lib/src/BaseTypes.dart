@@ -71,9 +71,9 @@ class BaseTypes {
               ..name = "map"
               ..type = refer("Map"))
             .build())
-        ..body = new Code('''return map == null ? 
-        null : 
-        new ${className}()..map.addAll(map);  
+        ..body = new Code('''return map == null ?
+        null :
+        new ${className}()..map.addAll(map);
         ''')));
   }
 

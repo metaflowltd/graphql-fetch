@@ -4,6 +4,7 @@ class QueryTypes extends BaseTypes {
   String _prefix;
   String _path;
   List<Reference> depFragments = [];
+  Set<String> c = new Set<String>();
 
   QueryTypes(GraphqlSchema schema, this._prefix, this._path) : super(schema);
 
@@ -31,7 +32,6 @@ class QueryTypes extends BaseTypes {
             refer("dynamic", "dart:core"), GraphType.OTHER);
     }
   }
-
   generateClassForType(
       FileBuilder b, SelectionContext context, dynamic objectSchema) {
     var className = "${objectSchema.name}";
@@ -55,7 +55,10 @@ class QueryTypes extends BaseTypes {
       });
       generateClass(cb, className, fields);
     });
-    b.body.add(clazz);
+    if (!c.contains(className)){
+      b.body.add(clazz);
+      c.add(className);
+    }
     return className;
   }
 }

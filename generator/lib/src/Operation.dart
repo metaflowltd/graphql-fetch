@@ -44,7 +44,7 @@ class Operation extends BaseTypes {
           "${resultClass}.fromMap);";
     });
   }
-
+  Set<String> classes = new Set<String>();
   generateResultClass(
       FileBuilder b, SelectionContext context, dynamic schemaObject) {
     var cls = new Class((ClassBuilder cb) => generateClass(
@@ -52,7 +52,11 @@ class Operation extends BaseTypes {
           schemaObject.name:
               _queryTypes.generateFieldType(b, context, schemaObject.type)
         }));
-    b.body.add(cls);
+    if (!classes.contains(resultClassName)){
+      b.body.add(cls);
+      classes.add(resultClassName);
+    }
+
     return resultClassName;
   }
 
