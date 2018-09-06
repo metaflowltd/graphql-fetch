@@ -48,7 +48,7 @@ class RestClient extends http.BaseClient {
     Map<String, String> headersMap = {'Content-Type': 'application/json'};
     headersMap.addAll(headers);
     http.Response response =
-          await this.post(uri.toString(), body: body, headers: headersMap).timeout(new Duration(seconds: 15));
+          await this.post(uri.toString(), body: body, headers: headersMap).timeout(new Duration(seconds: 30));
 
     return handleJsonResponse(response);
 
