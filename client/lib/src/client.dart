@@ -26,7 +26,7 @@ class RestClient extends http.BaseClient {
   }
 
   String toJson(Map<String, dynamic> data) {
-    return JSON.encode(data, toEncodable: toEncodable);
+    return json.encode(data, toEncodable: toEncodable);
   }
 
   toEncodable(d) {
@@ -56,7 +56,7 @@ class RestClient extends http.BaseClient {
 
   JsonResponse handleJsonResponse(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 400) {
-      String bodyString = UTF8.decode(response.bodyBytes);
+      String bodyString = utf8.decode(response.bodyBytes);
       return new JsonResponse(bodyString);
     } else {
       throw new http.ClientException(
@@ -108,7 +108,7 @@ class GraphqlClient extends RestClient {
     JsonResponse result =
         await request(query.query, query.variables, authToken: authToken);
     return result.decode((body) {
-      Map map = JSON.decode(body);
+      Map map = json.decode(body);
       return new GraphqlResponse(query.constructorOfData, map);
     });
   }
